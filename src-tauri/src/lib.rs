@@ -12,7 +12,7 @@ fn get_url() -> String {
     if args.len() > 1 {
         return args[1].clone();
     }
-    return "https://studiobeta.8thwall.app/native-splats-lucas/".to_string();
+    return "https://xradventure.8thwall.app/studio-daf/".to_string();
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -37,6 +37,7 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_ios_fs::init())
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
