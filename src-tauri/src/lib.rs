@@ -24,7 +24,7 @@ pub fn run() {
             #[cfg(mobile)]
             let main_window = app.get_webview_window("main").unwrap();
             let url = get_url();
-            let parsed_url = Url::parse(&url).unwrap_or_else(|e| {
+            let parsed_url = Url::parse(&url).unwrap_or_else(|_e| {
                 eprintln!("Error parsing URL: {}" , url);
                 Url::parse("https://xradventure.8thwall.app/studio-daf/").unwrap()
             });
