@@ -34,10 +34,11 @@ pub fn run() {
                 tauri::WebviewUrl::External(parsed_url),
             )
             .build()?;
+        #[cfg(target_os = "ios")]
+        app.handle().plugin(tauri_plugin_ios_fs::init())?;
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
-        .plugin(tauri_plugin_ios_fs::init())
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
