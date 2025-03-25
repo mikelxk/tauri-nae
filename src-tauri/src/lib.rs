@@ -18,6 +18,7 @@ fn get_url() -> String {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let builder = tauri::Builder::default()
+        .plugin(tauri_plugin_http::init())
         .setup(|app| {
             #[cfg(desktop)]
             let main_window = app.get_webview_window("main").unwrap().hide();
