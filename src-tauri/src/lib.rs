@@ -17,7 +17,7 @@ fn get_url() -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    tauri::Builder::default()
+    let builder = tauri::Builder::default()
         .setup(|app| {
             #[cfg(desktop)]
             let main_window = app.get_webview_window("main").unwrap().hide();
@@ -34,12 +34,13 @@ pub fn run() {
                 tauri::WebviewUrl::External(parsed_url),
             )
             .build()?;
-        #[cfg(target_os = "ios")]
-        app.handle().plugin(tauri_plugin_ios_fs::init())?;
             Ok(())
         })
-        .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .plugin(tauri_plugin_opener::init());
+        #[cfg(target_os = "ios")]
+        let builder = builder.plugin(tauri_plugin_ios_fs::init());
+
+        builder
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
