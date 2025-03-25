@@ -1,5 +1,5 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-use tauri::{ utils::config::parse, Manager, WebviewWindowBuilder};
+use tauri::{utils::config::parse, Manager, WebviewWindowBuilder};
 use url::Url;
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -25,22 +25,18 @@ pub fn run() {
             let main_window = app.get_webview_window("main").unwrap();
             let url = get_url();
             let parsed_url = Url::parse(&url).unwrap_or_else(|_e| {
-                eprintln!("Error parsing URL: {}" , url);
+                eprintln!("Error parsing URL: {}", url);
                 Url::parse("https://xradventure.8thwall.app/studio-daf/").unwrap()
             });
-            WebviewWindowBuilder::new(
-                app,
-                "webview",
-                tauri::WebviewUrl::External(parsed_url),
-            )
-            .build()?;
+            WebviewWindowBuilder::new(app, "webview", tauri::WebviewUrl::External(parsed_url))
+                .build()?;
             Ok(())
         })
         .plugin(tauri_plugin_opener::init());
-        #[cfg(target_os = "ios")]
-        let builder = builder.plugin(tauri_plugin_ios_fs::init());
+    #[cfg(target_os = "ios")]
+    let builder = builder.plugin(tauri_plugin_ios_fs::init());
 
-        builder
+    builder
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
